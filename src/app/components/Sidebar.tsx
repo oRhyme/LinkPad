@@ -2,7 +2,7 @@ import React from 'react'
 
 const Sidebar = () => {
   return (
-    <div className="drawer absolute z-10">
+    <div className="drawer absolute z-3">
       <input id="side-drawer" type="checkbox" className="drawer-toggle" />
       <div className="drawer-side top-12 h-[calc(100vh-3rem)]">
         <label htmlFor="side-drawer" aria-label="close sidebar" className="drawer-overlay"></label>

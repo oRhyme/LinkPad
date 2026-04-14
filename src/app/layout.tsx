@@ -33,7 +33,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col bg-base-200 text-base-content">
       <Navbar></Navbar>
       <Sidebar></Sidebar>
-        {children}</body>
+      <img src = "/plus.svg" className = " btn fixed size-10 bg-green-500 border-0 rounded-full p-0 left-1/2 bottom-5 z-4 -translate-x-1/2 opacity-40"></img>
+      {children}</body>
     </html>
   );
 }
