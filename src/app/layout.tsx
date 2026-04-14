@@ -26,8 +26,20 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      data-theme = "bumblebee"
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col bg-base-200 text-base-content">
+      <div className = "navbar-center bg-base-300 w-full justify-center h-12">
+        <div className = "flex flex-row items-center justify-start flex-1 gap-1 pl-2">
+        <img src="menu.svg" alt="menu" className = "w-8 h-8 p-1 backdrop-opacity-1 bg-base-300 hover:bg-primary btn"></img>
+        <h2 className = "text-center font-serif text-3xl">LinkBoard</h2>
+        </div>
+        <div className = "flex flex-1 flex-row justify-end gap-5 items-center pr-3 ">
+        <button className = "btn btn-primary">Sign-In</button>
+        <img src="moon.svg " className = "btn btn-primary rounded-full size-10 p-2 bg-white hover:bg-base-300"></img>
+        </div>
+      </div>
+        {children}</body>
     </html>
   );
 }
