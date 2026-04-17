@@ -11,3 +11,27 @@ generator client {
 datasource db {
   provider = "postgresql"
 }
+
+model User{
+  id Int @id @default(autoincrement())
+  email String @unique
+  name String
+  password String
+  articles Folder[]
+}
+
+model Folder{
+  id Int @id @default(autoincrement())
+  folderName String
+  author User @relation(fields:[authorId], references: [id])
+  authorId Int
+  pads Pad[]
+}
+
+model Pad{
+  id Int @id @default(autoincrement())
+  title String
+  description String?
+  folder Folder @relation(fields:[folderId], references : [id])
+  folderId Int
+}
