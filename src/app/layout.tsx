@@ -2,7 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import Sidebar from "./components/Sidebar";
-import Navbar from "./components/Navbar"
+import Navbar from "./components/Navbar";
+import Providers from "./components/Providers";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -28,13 +29,17 @@ export default function RootLayout({
     <html
       lang="en"
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
-      data-theme = "bumblebee"
+      data-theme="bumblebee"
+      suppressHydrationWarning={true}
     >
       <body className="min-h-full flex flex-col bg-base-200 text-base-content">
-      <Navbar></Navbar>
-      <Sidebar></Sidebar>
-      <img src = "/plus.svg" className = "btn fixed size-10 bg-green-500 border-0 rounded-full p-0 left-1/2 bottom-5 z-4 -translate-x-1/2 opacity-40 cursor-pointer hover:opacity-100 transition-opacity duration-300 hover:scale-110 transition-scale duration-300 "></img>
-      {children}</body>
+        <Providers>
+          <Navbar />
+          <Sidebar />
+          <img src="/plus.svg" className="btn fixed size-10 bg-green-500 border-0 rounded-full p-0 left-1/2 bottom-5 z-4 -translate-x-1/2 opacity-40 cursor-pointer hover:opacity-100 transition-opacity duration-300 hover:scale-110 transition-scale duration-300" />
+          {children}
+        </Providers>
+      </body>
     </html>
   );
 }

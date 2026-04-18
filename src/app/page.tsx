@@ -6,13 +6,16 @@ export default function Home() {
 
 
   return (
-    <div className="grid grid-cols-4 gap-5 min-h-screen m-5">
+    <div className = "flex justify-center w-full">
+
+    <div className="flex justify-start flex-wrap gap-5 min-h-screen m-5 w-[calc(100vw-7rem)] mt-5">
       <Card t = "How to use DaisyUI cards" d = "This page talks about the usage of cards as a daisyUI component" i = "mock.jpg"></Card>
       <Card t = "How to use DaisyUI cards" d = "This page talks about the usage of cards as a daisyUI component" i = "mock.jpg"></Card>
       <Card t = "How to use DaisyUI cards" d = "This page talks about the usage of cards as a daisyUI component" i = "mock.jpg"></Card>
       <Card t = "How to use DaisyUI cards" d = "This page talks about the usage of cards as a daisyUI component" i = "mock.jpg"></Card>
       <Card t = "How to use DaisyUI cards" d = "This page talks about the usage of cards as a daisyUI component" i = "mock.jpg"></Card>
       <Card t = "How to use DaisyUI cards" d = "This page talks about the usage of cards as a daisyUI component" i = "mock.jpg"></Card>
+    </div>
     </div>
   );
 }
