@@ -32,7 +32,7 @@ export default function RootLayout({
       data-theme="bumblebee"
       suppressHydrationWarning={true}
     >
-      <body className="min-h-full flex flex-col bg-base-200 text-base-content">
+      <body className="min-h-full flex flex-col bg-base-300 text-base-content">
         <Providers>
           <Navbar />
           <Sidebar />

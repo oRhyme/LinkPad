@@ -15,3 +15,7 @@
     field-sizing: content;
   }
 }
+
+.cardList{
+  columns : calc(100vw/4)
+}
