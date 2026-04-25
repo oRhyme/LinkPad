@@ -2,12 +2,13 @@
 import React from 'react'
 import { useState } from 'react'
 
-const ListItem = ({folder} :  {folder : string}) => {
+const ListItem = ({folder,inAddMode, onEnter} :  {folder : string, inAddMode : boolean,onEnter(value : string) : void}) => {
   const [text,setText] = useState(folder)
-  const [isEditing, setIsEditing] = useState(false)
+  const [isEditing, setIsEditing] = useState(inAddMode)
   const handleKeyDown = (e : React.KeyboardEvent<HTMLTextAreaElement>)=>{
     if(e.key == "Enter"){
         setIsEditing(false)
+        onEnter(text)
     }
   }
   return (
