@@ -1,15 +1,15 @@
 {
-    "name": "My YT Bookmarks",
+    "name": "LinkBoard",
     "version": "0.1.0",
-    "description": "Saving timestamps in YT videos",
+    "description": "Save and organize your links",
     "permissions": ["storage", "tabs"],
-    "host_permissions": ["https://*.youtube.com/*"],
+    "host_permissions": ["https://*/*"],
     "background": {
       "service_worker": "background.js"
     },
     "content_scripts": [
       {
-        "matches": ["https://*.youtube.com/*"],
+        "matches": ["https://*/*"],
         "js": ["contentScript.js"]
       }
     ],

@@ -9,7 +9,9 @@ const Sidebar = () => {
   }
   const onEnter = (value : string)=>{
     setAddMode(false)
-    setFolderList([...folderList,value])
+    if (addMode){
+      setFolderList([...folderList,value])
+    }
   }
 
   return (
