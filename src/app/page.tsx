@@ -17,7 +17,7 @@ export default function Home() {
       <Card t = "How to use DaisyUI cards" d = "This page talks about the usage of cards as a daisyUI component" i = "mock.jpg"></Card>
       <Card t = "How to use DaisyUI cards" d = "This page talks about the usage of cards as a daisyUI component" i = "mock.jpg"></Card>
       <Card t = "How to use DaisyUI cards" d = "This page talks about the usage of cards as a daisyUI component" i = "mock.jpg"></Card>
-      <NewCard/>
+      {/* <NewCard/> */}
     </div>
     </div>
   );
