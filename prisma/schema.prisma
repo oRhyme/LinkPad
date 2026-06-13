@@ -17,7 +17,7 @@ model User{
   email String @unique
   name String
   password String
-  articles Folder[]
+  folders Folder[]
 }
 
 model Folder{
@@ -31,6 +31,7 @@ model Folder{
 model Pad{
   id Int @id @default(autoincrement())
   title String
+  url String?
   description String?
   folder Folder @relation(fields:[folderId], references : [id])
   folderId Int

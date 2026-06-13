@@ -43,12 +43,11 @@ const Sidebar = () => {
             ></img>
           </div>
 
-          {folderList.map((folder, i) => (
+          {folderList.map((folder) => (
             <ListItem
               folder={folder}
               inAddMode={false}
               onEnter={onEnter}
-              key={i}
             />
           ))}
           {addMode && (

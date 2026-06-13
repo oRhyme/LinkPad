@@ -2,16 +2,15 @@
 import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { authClient } from "../../../lib/auth/client";
 const ListItem = ({
   folder,
   inAddMode,
   onEnter,
-  key
 }: {
   folder: string;
   inAddMode: boolean;
   onEnter(value: string): void;
-  key: any;
 }) => {
   const router = useRouter();
   const [text, setText] = useState(folder);
@@ -22,11 +21,13 @@ const ListItem = ({
       onEnter(text);
     }
   };
-  const itemClicked = (e: React.MouseEvent) => {
-    router.push(`${{ key }}`);
+  const itemClicked = async (e: React.MouseEvent) => {
+    router.push(`/folder/${folder}`); 
+    const{data,error} = await authClient.getSession();
+    console.log(data)
   };
   return (
-    <li className="p-1 text-center flex justify-between flex-row">
+    <li className="p-1 text-center flex justify-between flex-row" onClick = {itemClicked}>
       {isEditing ? (
         <input
           type="text"

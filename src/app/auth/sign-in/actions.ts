@@ -16,5 +16,6 @@ export async function signInWithEmail(
     return { error: error.message || 'Failed to sign in. Try again' };
   }
 
+
   redirect('/');
 }
