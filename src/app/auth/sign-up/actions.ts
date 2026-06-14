@@ -44,6 +44,18 @@ export async function signUpWithEmail(
       name,
       email,
       password,
+      folders : {
+        create : {
+          folderName : "default",
+          pads : {
+            create : {
+              title : "Getting Started",
+              description : "Sample Description",
+              url : "https://react.dev/"
+            }
+          }
+        }
+      }
     },
   })};
 
