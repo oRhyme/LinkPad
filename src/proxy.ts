@@ -7,7 +7,7 @@ export default auth.middleware({
 
 export const config = {
   matcher: [
-    '/',
+    '/:path*',
     // Protected routes requiring authentication
     // '/account/:path*',
   ],
