@@ -1,28 +1,85 @@
-"use client";
+
+"use server"
 import React, { useState } from "react";
 import ListItem from "./ListItem";
 import { useEffect } from "react";
+import { authClient } from "../../../lib/auth/client";
+import { getUserFolders } from "../actions/folders";
+import { prisma } from "../../../lib/prisma";
+
 const Sidebar = () => {
-  const [folderList, setFolderList] = useState([
-    "hello",
-    "world",
-    "this",
-    "is",
-    "test",
-    "hi",
-  ]);
+  const [folderList, setFolderList] = useState<{ id: number; folderName: string }[]>([]);
+  const [loading, setLoading] = useState(true);
   const [addMode, setAddMode] = useState(false);
+  const [userEmail, setUserEmail] = useState("")
+  const [userID,setUserID] = useState<number>()
+
+  useEffect(() => {
+    const fetchUserID = async ()=>{
+      try{
+        //get user email from neon auth client
+        const { data } = await authClient.getSession();
+        if (!data?.user?.email) {
+          setLoading(false);
+          return;
+        }
+        setUserEmail(data.user.email);
+
+        //get user ID from prisma
+        const tempUserID = await prisma.user.findUnique({
+          where : {
+            email : data.user.email
+          },
+          select : {
+            id : true
+          }
+        })
+        setUserID(tempUserID?.id)
+      }catch(err){
+        console.log(err)
+      }
+    }
+    
+    const fetchFolders = async () => {
+      try {
+        
+        const { folders, error } = await getUserFolders(userEmail);
+        if (error) {
+          console.error(error);
+        }
+        setFolderList(folders);
+      } catch (err) {
+        console.error("Failed to load folders:", err);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchFolders();
+  }, []);
+
   const addNewFolder = () => {
     setAddMode(true);
   };
+
   const onEnter = (value: string) => {
     setAddMode(false);
-    if (addMode) {
-      setFolderList([...folderList, value]);
+    if (addMode && value.trim()) {
+      setFolderList([...folderList, { id: Date.now(), folderName: value }]);
+      const addFolderToPrisma = async ()=>{
+        await prisma.folder.create({
+          data : {
+            folderName : value,
+            author : {
+              connect : {
+                email : userEmail,
+              },
+            },
+          }, 
+        })
+      }
     }
   };
-
-  
 
   return (
     <div className="drawer absolute z-3">
@@ -43,15 +100,22 @@ const Sidebar = () => {
             ></img>
           </div>
 
-          {folderList.map((folder) => (
-            <ListItem
-              folder={folder}
-              inAddMode={false}
-              onEnter={onEnter}
-            />
-          ))}
+          {loading ? (
+            <li className="p-4 text-sm opacity-50">Loading folders...</li>
+          ) : folderList.length === 0 && !addMode ? (
+            <li className="p-4 text-sm opacity-50">No folders yet</li>
+          ) : (
+            folderList.map((folder) => (
+              <ListItem
+                key={folder.id}
+                folder={folder.folderName}
+                inAddMode={false}
+                onEnter={onEnter}
+              />
+            ))
+          )}
           {addMode && (
-            <ListItem folder={""} inAddMode={true} onEnter={onEnter} key = {null}/>
+            <ListItem folder={""} inAddMode={true} onEnter={onEnter} key={null} />
           )}
         </ul>
       </div>
@@ -60,3 +124,4 @@ const Sidebar = () => {
 };
 
 export default Sidebar;
+
