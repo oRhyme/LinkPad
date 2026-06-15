@@ -1,10 +1,10 @@
-
-"use server"
+"use client"
+//TODO REMOVE ANY PRISMA USAGES
 import React, { useState } from "react";
 import ListItem from "./ListItem";
 import { useEffect } from "react";
 import { authClient } from "../../../lib/auth/client";
-import { getUserFolders } from "../actions/folders";
+import { getUserFolders } from "../actions/getUserFolders";
 import { prisma } from "../../../lib/prisma";
 
 const Sidebar = () => {
@@ -42,11 +42,8 @@ const Sidebar = () => {
     
     const fetchFolders = async () => {
       try {
-        
-        const { folders, error } = await getUserFolders(userEmail);
-        if (error) {
-          console.error(error);
-        }
+
+        const folders = await getUserFolders(userEmail);
         setFolderList(folders);
       } catch (err) {
         console.error("Failed to load folders:", err);
