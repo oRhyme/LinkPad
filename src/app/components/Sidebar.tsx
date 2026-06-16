@@ -15,31 +15,30 @@ const Sidebar = () => {
   const [userID,setUserID] = useState<number>()
 
   useEffect(() => {
-    const init = async () => {
-      try {
-        // Step 1: Get user email from auth client
+    const init = async ()=>{
+      try{
+        //get user email from neon auth client
         const { data } = await authClient.getSession();
         if (!data?.user?.email) {
           setLoading(false);
           return;
         }
-        const email = data.user.email;
-        setUserEmail(email);
+        setUserEmail(data.user.email);
 
-        // Step 2: Get user ID from prisma
-        const tempUserID = await getUserData(email);
-        setUserID(tempUserID?.id);
+        //get user ID from prisma
+        const tempUserID = await getUserData(data?.user?.email)
+        setUserID(tempUserID?.id)
 
-        // Step 3: Fetch folders using the same email
-        const result: any = await getUserFolders(email);
+        //fetch folders
+        const result:any = await getUserFolders(data?.user?.email);
         setFolderList(result.folders);
-      } catch (err) {
-        console.error("Failed to initialize sidebar:", err);
-      } finally {
-        setLoading(false);
-      }
-    };
 
+      }catch(err){
+        console.log(err)
+      }finally{
+        setLoading(false)
+      }
+    }
     init();
   }, []);
 
