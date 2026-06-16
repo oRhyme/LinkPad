@@ -1,11 +1,11 @@
 "use client"
-//TODO REMOVE ANY PRISMA USAGES
+//TODO: REMOVE ANY PRISMA USAGES
 import React, { useState } from "react";
 import ListItem from "./ListItem";
 import { useEffect } from "react";
 import { authClient } from "../../../lib/auth/client";
-import { getUserFolders } from "../actions/getUserFolders";
-import { prisma } from "../../../lib/prisma";
+import { getUserFolders } from "../actions/getUserFolders"
+import {getUserData} from "../actions/getUserData"
 
 const Sidebar = () => {
   const [folderList, setFolderList] = useState<{ id: number; folderName: string }[]>([]);
@@ -26,14 +26,7 @@ const Sidebar = () => {
         setUserEmail(data.user.email);
 
         //get user ID from prisma
-        const tempUserID = await prisma.user.findUnique({
-          where : {
-            email : data.user.email
-          },
-          select : {
-            id : true
-          }
-        })
+        const tempUserID = await getUserData(data?.user?.email)
         setUserID(tempUserID?.id)
       }catch(err){
         console.log(err)
@@ -43,8 +36,8 @@ const Sidebar = () => {
     const fetchFolders = async () => {
       try {
 
-        const folders = await getUserFolders(userEmail);
-        setFolderList(folders);
+        const result:any = await getUserFolders(userEmail);
+        setFolderList(result.folders);
       } catch (err) {
         console.error("Failed to load folders:", err);
       } finally {
@@ -63,18 +56,18 @@ const Sidebar = () => {
     setAddMode(false);
     if (addMode && value.trim()) {
       setFolderList([...folderList, { id: Date.now(), folderName: value }]);
-      const addFolderToPrisma = async ()=>{
-        await prisma.folder.create({
-          data : {
-            folderName : value,
-            author : {
-              connect : {
-                email : userEmail,
-              },
-            },
-          }, 
-        })
-      }
+      // const addFolderToPrisma = async ()=>{
+      //   await prisma.folder.create({
+      //     data : {
+      //       folderName : value,
+      //       author : {
+      //         connect : {
+      //           email : userEmail,
+      //         },
+      //       },
+      //     }, 
+      //   })
+      // }
     }
   };
 

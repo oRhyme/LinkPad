@@ -2,13 +2,6 @@
 
 import { prisma } from "../../../lib/prisma";
 
-/**
- * Fetches all folders belonging to a user by their auth userId.
- * 
- * Note: The Neon Auth user table uses a UUID `id`, but our Prisma User model
- * uses an autoincrement Int `id`. We look up the user by email since that's
- * the shared unique identifier between both systems.
- */
 export async function getUserFolders(userEmail: string) {
   try {
     const user = await prisma.user.findUnique({
