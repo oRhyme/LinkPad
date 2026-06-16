@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import ListItem from "./ListItem";
 import { useEffect } from "react";
 import { authClient } from "../../../lib/auth/client";
-import { getUserFolders } from "../actions/getUserFolders"
+import { getUserFolders, createFolder } from "../actions/getUserFolders"
 import {getUserData} from "../actions/getUserData"
 
 const Sidebar = () => {
@@ -15,59 +15,55 @@ const Sidebar = () => {
   const [userID,setUserID] = useState<number>()
 
   useEffect(() => {
-    const fetchUserID = async ()=>{
-      try{
-        //get user email from neon auth client
+    const init = async () => {
+      try {
+        // Step 1: Get user email from auth client
         const { data } = await authClient.getSession();
         if (!data?.user?.email) {
           setLoading(false);
           return;
         }
-        setUserEmail(data.user.email);
+        const email = data.user.email;
+        setUserEmail(email);
 
-        //get user ID from prisma
-        const tempUserID = await getUserData(data?.user?.email)
-        setUserID(tempUserID?.id)
-      }catch(err){
-        console.log(err)
-      }
-    }
-    
-    const fetchFolders = async () => {
-      try {
+        // Step 2: Get user ID from prisma
+        const tempUserID = await getUserData(email);
+        setUserID(tempUserID?.id);
 
-        const result:any = await getUserFolders(userEmail);
+        // Step 3: Fetch folders using the same email
+        const result: any = await getUserFolders(email);
         setFolderList(result.folders);
       } catch (err) {
-        console.error("Failed to load folders:", err);
+        console.error("Failed to initialize sidebar:", err);
       } finally {
         setLoading(false);
       }
     };
 
-    fetchFolders();
+    init();
   }, []);
 
   const addNewFolder = () => {
     setAddMode(true);
   };
 
-  const onEnter = (value: string) => {
+  const onEnter = async (value: string) => {
     setAddMode(false);
     if (addMode && value.trim()) {
-      setFolderList([...folderList, { id: Date.now(), folderName: value }]);
-      // const addFolderToPrisma = async ()=>{
-      //   await prisma.folder.create({
-      //     data : {
-      //       folderName : value,
-      //       author : {
-      //         connect : {
-      //           email : userEmail,
-      //         },
-      //       },
-      //     }, 
-      //   })
-      // }
+      // Optimistically add with a temp id
+      const tempId = Date.now();
+      setFolderList([...folderList, { id: tempId, folderName: value }]);
+
+      // Persist to DB and change the temp ID to real ID from prisma
+      const result = await createFolder(userEmail, value);
+      if (result.folder) {
+        // Replace temp id with real DB id
+        setFolderList((prev) =>
+          prev.map((f) => (f.id === tempId ? { id: result.folder!.id, folderName: result.folder!.folderName } : f))
+        );
+      } else {
+        console.error("Failed to create folder:", result.error);
+      }
     }
   };
 
