@@ -49,6 +49,7 @@ const Sidebar = () => {
   const onEnter = async (value: string) => {
     setAddMode(false);
     if (addMode && value.trim()) {
+      
       // Optimistically add with a temp id
       const tempId = Date.now();
       setFolderList([...folderList, { id: tempId, folderName: value }]);

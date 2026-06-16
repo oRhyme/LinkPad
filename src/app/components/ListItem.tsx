@@ -36,6 +36,7 @@ const ListItem = ({
           className="max-w-[90%] h-6 overflow-hidden"
           onBlur={() => {
             setIsEditing(false);
+            onEnter(text);
           }}
           onKeyDown={handleKeyDown}
           onChange={(k) => setText(k.target.value)}
