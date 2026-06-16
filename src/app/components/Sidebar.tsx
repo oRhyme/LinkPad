@@ -49,7 +49,7 @@ const Sidebar = () => {
   const onEnter = async (value: string) => {
     setAddMode(false);
     if (addMode && value.trim()) {
-      
+
       // Optimistically add with a temp id
       const tempId = Date.now();
       setFolderList([...folderList, { id: tempId, folderName: value }]);
@@ -80,7 +80,7 @@ const Sidebar = () => {
           <div className="flex align-center justify-between my-3!">
             <h2 className="ml-1 font-bold text-lg font-serif">Folders</h2>
             <img
-              src="./plus.svg"
+              src="/plus.svg"
               className="size-5 btn btn-primary mr-3!"
               onClick={addNewFolder}
             ></img>
