@@ -32,6 +32,7 @@ const Sidebar = () => {
         //fetch folders
         const result:any = await getUserFolders(data?.user?.email);
         setFolderList(result.folders);
+        console.log(result)
 
       }catch(err){
         console.log(err)
@@ -93,7 +94,8 @@ const Sidebar = () => {
           ) : (
             folderList.map((folder) => (
               <ListItem
-                key={folder.id}
+                key = {folder.id}
+                ID={folder.id}
                 folder={folder.folderName}
                 inAddMode={false}
                 onEnter={onEnter}
@@ -101,7 +103,7 @@ const Sidebar = () => {
             ))
           )}
           {addMode && (
-            <ListItem folder={""} inAddMode={true} onEnter={onEnter} key={null} />
+            <ListItem folder={""} inAddMode={true} onEnter={onEnter} ID={Date.now()} />
           )}
         </ul>
       </div>

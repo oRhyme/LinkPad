@@ -3,11 +3,15 @@ import React from "react";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { authClient } from "../../../lib/auth/client";
+import {changeFolderName} from "../actions/changeFolderName"
+
 const ListItem = ({
+  ID,
   folder,
   inAddMode,
   onEnter,
 }: {
+  ID: number;
   folder: string;
   inAddMode: boolean;
   onEnter(value: string): void;
@@ -15,14 +19,18 @@ const ListItem = ({
   const router = useRouter();
   const [text, setText] = useState(folder);
   const [isEditing, setIsEditing] = useState(inAddMode);
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key == "Enter") {
+  const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key == "Enter" && !isEditing) {
+      // setIsEditing(false);
+      onEnter(text);
+    }else if(e.key == "Enter" && isEditing){
+      await changeFolderName(ID,text);
       setIsEditing(false);
       onEnter(text);
     }
   };
   const itemClicked = async (e: React.MouseEvent) => {
-    router.push(`/folder/${folder}`); 
+    router.push(`/folder/${ID}`); 
     const{data,error} = await authClient.getSession();
     console.log(data)
   };
