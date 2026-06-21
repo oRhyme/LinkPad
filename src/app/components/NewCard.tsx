@@ -2,12 +2,27 @@
 import React from 'react'
 import Card from './Card'
 import {useState} from 'react'
-const NewCard = () => {
+import { saveCardAction } from '../actions/saveCardAction'
+const NewCard = ({folderId} : {folderId:string|number}) => {
 
   const [title,setTitle] = useState<string>("")
   const [description, setDescription] = useState<string>("")
   const [url, setUrl] = useState<string>("")
   
+  const saveCard = async ()=>{
+    try {
+      const result = await saveCardAction(title,description,url,folderId)
+      if(result?.success){
+        setTitle("")
+        setDescription("")
+        setUrl("")
+      } else {
+        console.error("Save failed:", result?.error)
+      }
+    } catch(err) {
+      console.error("Error calling saveCardAction:", err)
+    }
+  }
 
   return (
     <>
@@ -19,7 +34,7 @@ const NewCard = () => {
             <textarea maxLength = {200} className = "bg-gray-200! w-full max-h-[60%]! min-h-[60%]!   p-2" placeholder = "Description" value = {description} onChange={(e)=>{setDescription(e.target.value)}}></textarea>
         </div>
         <div className = "card-actions justify-end p-3! w-full! h-[20%]!">
-          <input type="button" className = "btn btn-primary bg-green-400! font-bold w-12! h-6! text-sm text-gray-100! " value="SAVE" />
+          <input type="button" className = "btn btn-primary bg-green-400! font-bold w-12! h-6! text-sm text-gray-100! " value="SAVE" onClick={saveCard}/>
           <input type="button" className = "btn btn-primary bg-red-400! font-bold w-18! h-6! text-sm text-gray-100! " value="DISCARD" />
 
         </div>

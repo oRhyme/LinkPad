@@ -19,7 +19,7 @@ const page = () => {
     <img src="/plus.svg" className="btn fixed size-10 bg-green-500 border-0 rounded-full p-0 left-1/2 bottom-5 z-4 -translate-x-1/2 opacity-40 cursor-pointer hover:opacity-100 transition-opacity duration-300 hover:scale-110 transition-scale duration-300" 
     onClick = {handleClick}/>
     {!hidden && <><div className = "fixed w-full h-full bg-black top-0 left-0 z-5 opacity-30"  onClick={()=>{setHidden(true)}}></div>
-    <NewCard/></>}
+    <NewCard folderId = {folderId}/></>}
     </>
   )
 }
