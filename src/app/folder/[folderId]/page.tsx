@@ -5,8 +5,8 @@ import React from 'react'
 import {useState} from 'react'
 
 const page = () => {
-    const params = useParams();
-    const folderId = params.folderId;
+    const params = useParams<{folderId: string}>();
+    const folderId = Number(params?.folderId) || 0;
     const [hidden,setHidden] = useState<boolean>(true)
     
     const handleClick = ()=>{

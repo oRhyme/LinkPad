@@ -3,7 +3,7 @@ import React from 'react'
 import Card from './Card'
 import {useState} from 'react'
 import { saveCardAction } from '../actions/saveCardAction'
-const NewCard = ({folderId} : {folderId:string|number}) => {
+const NewCard = (folderId : {folderId : number}) => {
 
   const [title,setTitle] = useState<string>("")
   const [description, setDescription] = useState<string>("")
@@ -11,7 +11,7 @@ const NewCard = ({folderId} : {folderId:string|number}) => {
   
   const saveCard = async ()=>{
     try {
-      const result = await saveCardAction(title,description,url,folderId)
+      const result = await saveCardAction(title,description,url,folderId.folderId)
       if(result?.success){
         setTitle("")
         setDescription("")
