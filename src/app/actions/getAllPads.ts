@@ -7,6 +7,9 @@ export const getAllPads = async(FId : number|string)=>{
         const pads = await prisma.pad.findMany({
             where : {
                 folderId: Number(FId)
+            },
+            orderBy:{
+                id : 'desc'
             }
         })
         return pads
