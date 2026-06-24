@@ -12,7 +12,7 @@ export async function saveCardAction(title: string, description: string, url: st
     }
 
     try{
-        await prisma.pad.create({
+        const newPad = await prisma.pad.create({
             data : {
                 title: title,
                 url: url || null,
@@ -20,7 +20,7 @@ export async function saveCardAction(title: string, description: string, url: st
                 folderId: folderIdNum
             }
         })
-        return { success: true }
+        return { success: true, pad: newPad }
     }catch(err: any){
         console.error("Error in saving cards ",err)
         return { success: false, error: err.message ?? "Failed to save card" }
