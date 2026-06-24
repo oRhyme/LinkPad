@@ -28,6 +28,10 @@ const page = () => {
       setPads(prev => prev.filter(p => p.id !== tempId))
     }
 
+    const handleDeleteOptimistic = (CardId: number)=>{
+      setPads(prev=>prev.filter(p=>p.id!==CardId))
+    }
+
     useEffect(()=>{
       async function fetchPads(){
         const data = await getAllPads(folderId)
@@ -37,23 +41,18 @@ const page = () => {
       fetchPads()
     }, [folderId])
 
-
-
-  //   <div className = "flex justify-center w-full">
-
-  //   <div className="min-h-screen cardList w-[98vw]">
   return (
     <>
     <div className = "flex justify-center w-full">
     <div className="min-h-screen cardList w-[98vw]">
-    {pads.map((pad:any)=>{
-     return <Card key = {pad.id} t = {pad.title} d = {pad.description} i = {pad.image || pad.url}/>
+    {pads?.map((pad:any)=>{
+     return <Card key = {pad.id} t = {pad.title} d = {pad.description} i = {pad.image || pad.url} CardId = {pad.id} onDelete = {handleDeleteOptimistic}/>
     })}
     </div>  
     </div>
     <img src="/plus.svg" className="btn fixed size-10 bg-green-500 border-0 rounded-full p-0 left-1/2 bottom-5 z-4 -translate-x-1/2 opacity-40 cursor-pointer hover:opacity-100 transition-opacity duration-300 hover:scale-110 transition-scale duration-300" 
     onClick = {handleClick}/>
-    {!hidden && <><div className = "fixed w-full h-full bg-black top-0 left-0 z-5 opacity-30"  onClick={()=>{setHidden(true)}}></div>
+    {!hidden && <><div className = "fixed w-full h-full bg-black top-0 left-0 z-5 opacity-30"  onClick={()=>{setHidden(true)}} ></div>
     <NewCard 
       folderId={folderId} 
       onAddOptimistic={handleAddOptimistic} 
