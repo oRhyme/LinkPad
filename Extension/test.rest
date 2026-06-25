@@ -1,0 +1,9 @@
+
+POST http://localhost:3000/api/saveCardExt
+Content-Type: application/json
+
+{
+    "title": "Hello",
+    "url": "This is a test",
+    "description": "This is a test description",
+}

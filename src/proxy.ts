@@ -2,6 +2,7 @@ import { auth } from '../lib/auth/server';
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
+
 const neonMiddleware = auth.middleware({
   // Redirects unauthenticated users to sign-in page
   loginUrl: '/auth/sign-up',
@@ -13,6 +14,9 @@ export default async function proxy(request: NextRequest) {
   // validation, which destroys the server action payload.
   // Skip auth middleware for server actions — auth should be verified
   // inside each server action instead (per Next.js security docs).
+ 
+  console.log("Middleware hit:", request.nextUrl.pathname);
+  
   if (request.headers.get('next-action')) {
     return NextResponse.next();
   }
