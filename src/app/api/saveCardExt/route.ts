@@ -81,10 +81,10 @@ export async function POST(request: Request){
     }
 
     const body = await request.json();
-    const { title, description, url } = body;
-    console.log("Saving card:", { title, description, url });
+    const { title, description, url, folderId } = body;
+    console.log("Saving card:", { title, description, url, folderId });
     try{
-        saveCardAction(title,description,url,11)
+        await saveCardAction(title, description, url, folderId)
     }catch{
         console.log("Failed to save the card")
     }
