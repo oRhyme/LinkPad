@@ -16,6 +16,10 @@ export default async function proxy(request: NextRequest) {
   // inside each server action instead (per Next.js security docs).
  
   console.log("Middleware hit:", request.nextUrl.pathname);
+
+  if (request.nextUrl.pathname.startsWith("/api")){
+    return NextResponse.next();
+  }
   
   if (request.headers.get('next-action')) {
     return NextResponse.next();

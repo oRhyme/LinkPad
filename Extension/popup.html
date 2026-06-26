@@ -1,15 +1,20 @@
-<link href="popup.css" rel="stylesheet" type="text/css" />
-<script type="module" src="popup.js"></script>
-
-<div class="container">
-  <div>
-    <div class="title">
-      <h1>LinkBoard</h1>
-      <input type = "text" placeholder = "Enter Title">
-      <input type="text" placeholder = "Enter description">
-      <button>Save</button>
+<!DOCTYPE html>
+<html>
+<head>
+  <link href="popup.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div class="container">
+    <div>
+      <div class="title">
+        <h1>LinkBoard</h1>
+        <input type="text" placeholder="Enter Title">
+        <input type="text" placeholder="Enter description">
+        <button id="saveBtn">Save</button>
+      </div>
+      <div class="bookmarks" id="bookmarks"></div>
     </div>
-
-    <div class="bookmarks" id="bookmarks"></div>
   </div>
-</div>
+  <script src="popup.js"></script>
+</body>
+</html>

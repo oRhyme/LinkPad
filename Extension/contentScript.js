@@ -1,14 +1,5 @@
-(async () => {
- const body = await fetch("http://localhost:3000/actions/saveCardFromExtension", {
-    method: "POST",
-    headers:{
-        "Content-Type": "Next/Static"
-    },
-    body: JSON.stringify({
-        title: "Hello",
-        url: "This is a test",
-        description: "This is a test description",
-    })
- })
+(() => {
+  // Content scripts run in the context of the web page.
+  // Any UI-related extension interactions (like clicking a Save button in the popup)
+  // belong in popup.js, not here.
 })();
-

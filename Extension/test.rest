@@ -1,9 +1,11 @@
 
 POST http://localhost:3000/api/saveCardExt
 Content-Type: application/json
+# Cookie: __Secure-neon-auth.session_token=RdEvoKSW5dLBU5nSzMItOGSjwlz9pfBA.VUuMAyORlc9Exug6COWdawEB8RmaBIqwKe1LpOqVNeQ=
+credentials: include
 
 {
     "title": "Hello",
     "url": "This is a test",
-    "description": "This is a test description",
+    "description": "This is a test description"
 }
