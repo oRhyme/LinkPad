@@ -20,8 +20,13 @@ document.addEventListener("DOMContentLoaded", () => {
     return allCookies.map(c => `${c.name}=${c.value}`).join("; ");
   }
 
+
   /** Fetch folders from the API and populate the dropdown */
   async function loadFolders() {
+    const [tab] = await chrome.tabs.query({active:true,lastFocusedWindow:true})
+    urlInput.value = tab.url
+    console.log(tab.url);
+    titleInput.value = tab.title
     try {
       const cookieHeader = await getCookieHeader();
       if (!cookieHeader) {
@@ -56,7 +61,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load folders when popup opens
   loadFolders();
-
   if (saveBtn) {
     saveBtn.addEventListener("click", async () => {
       const title = titleInput?.value?.trim();

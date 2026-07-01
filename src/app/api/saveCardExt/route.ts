@@ -84,9 +84,9 @@ export async function POST(request: Request){
     const { title, description, url, folderId } = body;
     console.log("Saving card:", { title, description, url, folderId });
     try{
-        await saveCardAction(title, description, url, folderId)
+      await saveCardAction(title, description, url, folderId)
     }catch{
-        console.log("Failed to save the card")
+      console.log("Failed to save the card")
     }
 
     return Response.json({

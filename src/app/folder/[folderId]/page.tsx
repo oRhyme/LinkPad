@@ -6,6 +6,7 @@ import {useState} from 'react'
 import { useEffect } from 'react';
 import { getAllPads } from '../../actions/getAllPads';
 import Card from '@/app/components/Card'
+import {foo} from '../../actions/getImage'
 
 const page = () => {
     const params = useParams<{folderId: string}>();
@@ -14,6 +15,7 @@ const page = () => {
     const [pads,setPads] = useState<any[]>([])
     const handleClick = ()=>{
       setHidden(false)
+      // foo()
     }
 
     const handleAddOptimistic = (newPad: any) => {
