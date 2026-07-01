@@ -3,12 +3,12 @@ import React from 'react'
 import {useState} from 'react'
 import {deleteCardAction} from '../actions/deleteCardAction' 
 
-const Card = ({t,d,i,c,CardId,onDelete}:{t:string, d:string,i:string,c?:string,CardId:number,onDelete:(CardId:number)=>void}) => {
+const Card = ({t,d,i,c,url,CardId,onDelete}:{t:string, d:string,i:string,c?:string,url?:string,CardId:number,onDelete:(CardId:number)=>void}) => {
 
   const [title,setTitle] = useState<string>(t)
   const [description,setDescription] = useState<string>(d)
   const [image,setImage] = useState<string>(i)
-
+  
   const handleDelete=(CardId:number)=>{
     onDelete(CardId)
     deleteCardAction(CardId)
@@ -16,7 +16,13 @@ const Card = ({t,d,i,c,CardId,onDelete}:{t:string, d:string,i:string,c?:string,C
 
   return (
     <div className= {`card bg-base-100 card-border z-1 p-3 h-fit min-h-64 break-inside-avoid gap-4! mb-5! w-full ${c}`}>
-      <figure className="w-full shrink-0"><img src={image} alt="" /></figure>
+      <a href={url}> 
+      {image?
+      <figure className="size-1/2 shrink-0">
+        <img src={image}/>
+        </figure>:
+        <h1>{url}</h1>}
+      </a>
       <div className="card-body">
         <textarea rows={1} style={{ resize: 'none' }} className="card-title h-fit overflow-y-hidden p-2 text-2xl! text-base-content! font-bold font-serif!" placeholder="Title" value={title} onChange={(e) => setTitle(e.currentTarget.value)}></textarea>
         <textarea maxLength={200} rows={1} style={{ resize: 'none' }} className="min-h-5 overflow-y-hidden p-2 mb-7! text-base-content! text-lg!" placeholder="Description" value={description} onChange={(e) => setDescription(e.currentTarget.value)}></textarea>

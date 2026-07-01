@@ -32,6 +32,7 @@ model Pad{
   id Int @id @default(autoincrement())
   title String
   url String?
+  image String?
   description String?
   folder Folder @relation(fields:[folderId], references : [id])
   folderId Int
