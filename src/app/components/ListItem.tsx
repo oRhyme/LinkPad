@@ -23,7 +23,6 @@ const ListItem = ({
   const [hidden,setHidden] = useState(false)
   const handleKeyDown = async (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key == "Enter" && !isEditing) {
-      // setIsEditing(false);
       onEnter(text);
     }else if(e.key == "Enter" && isEditing){
       await changeFolderName(ID,text);
@@ -73,19 +72,6 @@ const ListItem = ({
           ></img>
         </div>
       )}
-      {/* {!isEditing ? (
-        <div className="size-4 p-0 m-0 flex absolute  ">
-          <img src="/delete.svg" />
-          <img
-            src="/edit.svg"
-            onClick={() => {
-              setIsEditing(true);
-            }}
-          ></img>
-        </div>
-      ) : (
-        <p className="hidden"></p>
-      )} */}
       <hr className="w-full opacity-10"></hr>
     </li>
   );
