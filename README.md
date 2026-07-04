@@ -1,6 +1,8 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+## Linkboard
+  Linkboard allows the user to categorize and order useful websites/videos/blogs.The user can create folders and create "pads" within those folders. These pads contain a 'title', 'description' and a clickable 'url'. If the website provides meta og:image tag, the provided image is displayed as an embedded link. Otherwise, the favicon of the website is displayed along with the url. 
+  The Linkboard extension allows the user to save a pad to a folder of their choice without having to copy paste the url in the website
 
-## Getting Started
+## How to start the project
 
 First, run the development server:
 
