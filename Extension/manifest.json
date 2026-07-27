@@ -21,7 +21,7 @@
           "assets/delete.png",
           "assets/save.png"
         ],
-        "matches": ["*"]
+        "matches": ["<all_urls>"]
       }
     ],
     "action": {

@@ -1,16 +1,45 @@
-console.log("=== LinkBoard popup.js LOADED ===");
+console.log("=== LinkPad popup.js LOADED ===");
 
 document.addEventListener("DOMContentLoaded", () => {
+  const linkForm = document.getElementById("linkForm");
   const saveBtn = document.getElementById("saveBtn");
-  const statusEl = document.getElementById("bookmarks");
   const folderSelect = document.getElementById("folderSelect");
   const titleInput = document.getElementById("titleInput");
   const urlInput = document.getElementById("urlInput");
   const descInput = document.getElementById("descInput");
 
-  function setStatus(msg) {
-    if (statusEl) statusEl.textContent = msg;
-    console.log("LinkBoard:", msg);
+  // Status banner elements
+  const statusBanner = document.getElementById("statusBanner");
+  const statusIcon = document.getElementById("statusIcon");
+  const statusText = document.getElementById("statusText");
+
+  let statusTimer = null;
+
+  /**
+   * Show a status banner with a type: "success" | "error" | "info"
+   */
+  function showStatus(msg, type = "info", autoDismiss = true) {
+    // Clear previous timer
+    if (statusTimer) clearTimeout(statusTimer);
+
+    // Set icon
+    const icons = { success: "✓", error: "✕", info: "ℹ" };
+    statusIcon.textContent = icons[type] || icons.info;
+
+    // Set text
+    statusText.textContent = msg;
+
+    // Set class
+    statusBanner.className = "status-banner " + type;
+
+    // Auto-dismiss after 4s
+    if (autoDismiss) {
+      statusTimer = setTimeout(() => {
+        statusBanner.className = "status-banner hidden";
+      }, 4000);
+    }
+
+    console.log(`LinkPad [${type}]:`, msg);
   }
 
   /** Build cookie header from all localhost cookies */
@@ -20,17 +49,20 @@ document.addEventListener("DOMContentLoaded", () => {
     return allCookies.map(c => `${c.name}=${c.value}`).join("; ");
   }
 
-
   /** Fetch folders from the API and populate the dropdown */
   async function loadFolders() {
-    const [tab] = await chrome.tabs.query({active:true,lastFocusedWindow:true})
-    urlInput.value = tab.url
-    console.log(tab.url);
-    titleInput.value = tab.title
+    // Auto-fill current tab info
+    const [tab] = await chrome.tabs.query({ active: true, lastFocusedWindow: true });
+    if (tab) {
+      urlInput.value = tab.url || "";
+      titleInput.value = tab.title || "";
+    }
+
     try {
       const cookieHeader = await getCookieHeader();
       if (!cookieHeader) {
         folderSelect.innerHTML = '<option value="" disabled selected>Not logged in</option>';
+        showStatus("Log in at localhost:3000 first", "error", false);
         return;
       }
 
@@ -61,50 +93,59 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Load folders when popup opens
   loadFolders();
-  if (saveBtn) {
-    saveBtn.addEventListener("click", async () => {
-      const title = titleInput?.value?.trim();
-      const url = urlInput?.value?.trim();
-      const description = descInput?.value?.trim();
-      const folderId = folderSelect?.value;
 
-      if (!title) { setStatus("Please enter a title"); return; }
-      if (!folderId) { setStatus("Please select a folder"); return; }
+  // Handle form submission
+  linkForm.addEventListener("submit", async (e) => {
+    e.preventDefault();
 
-      setStatus("Saving...");
+    const title = titleInput?.value?.trim();
+    const url = urlInput?.value?.trim();
+    const description = descInput?.value?.trim();
+    const folderId = folderSelect?.value;
 
-      try {
-        const cookieHeader = await getCookieHeader();
-        if (!cookieHeader) {
-          setStatus("Not logged in — log in at localhost:3000 first.");
-          return;
-        }
+    if (!title) { showStatus("Please enter a title", "error"); return; }
+    if (!folderId) { showStatus("Please select a folder", "error"); return; }
 
-        const response = await fetch("https://localhost:3000/api/saveCardExt", {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-            "Cookie": cookieHeader,
-          },
-          body: JSON.stringify({ title, url, description, folderId: Number(folderId) }),
-        });
+    // Disable button while saving
+    saveBtn.disabled = true;
+    saveBtn.querySelector(".btn-icon")?.setAttribute("style", "opacity:0.6");
+    showStatus("Saving…", "info", false);
 
-        const data = await response.json();
-        console.log("LinkBoard response:", data);
-
-        if (data.success || data.Success) {
-          setStatus("Saved successfully!");
-          // Clear inputs after save
-          if (titleInput) titleInput.value = "";
-          if (urlInput) urlInput.value = "";
-          if (descInput) descInput.value = "";
-        } else {
-          setStatus("Error: " + (data.message || "Unknown error"));
-        }
-      } catch (err) {
-        console.error("LinkBoard error:", err);
-        setStatus("Network error: " + err.message);
+    try {
+      const cookieHeader = await getCookieHeader();
+      if (!cookieHeader) {
+        showStatus("Not logged in — log in at localhost:3000 first.", "error");
+        saveBtn.disabled = false;
+        return;
       }
-    });
-  }
+
+      const response = await fetch("https://localhost:3000/api/saveCardExt", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "Cookie": cookieHeader,
+        },
+        body: JSON.stringify({ title, url, description, folderId: Number(folderId) }),
+      });
+
+      const data = await response.json();
+      console.log("LinkPad response:", data);
+
+      if (data.success || data.Success) {
+        showStatus("Link saved successfully!", "success");
+        // Clear inputs after save
+        titleInput.value = "";
+        urlInput.value = "";
+        descInput.value = "";
+      } else {
+        showStatus("Error: " + (data.message || "Unknown error"), "error");
+      }
+    } catch (err) {
+      console.error("LinkPad error:", err);
+      showStatus("Network error: " + err.message, "error");
+    } finally {
+      saveBtn.disabled = false;
+      saveBtn.querySelector(".btn-icon")?.removeAttribute("style");
+    }
+  });
 });

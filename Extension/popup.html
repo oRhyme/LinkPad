@@ -1,24 +1,77 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-  <link href="popup.css" rel="stylesheet" type="text/css" />
+  <meta charset="UTF-8" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="popup.css" rel="stylesheet" />
 </head>
 <body>
-  <div class="container">
-    <div>
-      <div class="title">
-        <h1>LinkBoard</h1>
-        <input type="text" id="titleInput" placeholder="Enter Title">
-        <input type="text" id="urlInput" placeholder="Enter URL">
-        <input type="text" id="descInput" placeholder="Enter description">
-        <select id="folderSelect">
-          <option value="" disabled selected>Loading folders...</option>
-        </select>
-        <button id="saveBtn">Save</button>
+  <div class="popup-container">
+
+    <!-- Header -->
+    <header class="popup-header">
+      <div class="header-brand">
+        <svg class="brand-icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/>
+          <path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/>
+        </svg>
+        <span class="brand-name">LinkPad</span>
       </div>
-      <div class="bookmarks" id="bookmarks"></div>
+    </header>
+
+    <!-- Status banner (hidden by default) -->
+    <div id="statusBanner" class="status-banner hidden">
+      <span id="statusIcon" class="status-icon"></span>
+      <span id="statusText" class="status-text"></span>
     </div>
+
+    <!-- Form -->
+    <form id="linkForm" class="link-form" autocomplete="off">
+      <div class="form-group">
+        <label for="titleInput">Title</label>
+        <input type="text" id="titleInput" placeholder="Page title" />
+      </div>
+
+      <div class="form-group">
+        <label for="urlInput">URL</label>
+        <input type="url" id="urlInput" placeholder="https://…" />
+      </div>
+
+      <div class="form-group">
+        <label for="descInput">Description</label>
+        <textarea id="descInput" rows="2" placeholder="Brief note (optional)"></textarea>
+      </div>
+
+      <div class="form-group">
+        <label for="folderSelect">Folder</label>
+        <div class="select-wrapper">
+          <select id="folderSelect">
+            <option value="" disabled selected>Loading folders…</option>
+          </select>
+          <svg class="select-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="6 9 12 15 18 9"/>
+          </svg>
+        </div>
+      </div>
+
+      <button type="submit" id="saveBtn" class="save-btn">
+        <svg class="btn-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"/>
+          <polyline points="17 21 17 13 7 13 7 21"/>
+          <polyline points="7 3 7 8 15 8"/>
+        </svg>
+        Save Link
+      </button>
+    </form>
+
+    <!-- Footer -->
+    <footer class="popup-footer">
+      <span class="footer-text">LinkPad Extension v0.1</span>
+    </footer>
   </div>
+
   <script src="popup.js"></script>
 </body>
 </html>
